@@ -1,82 +1,155 @@
 import Personal from "../model/personal.model.js";
+import User from '../model/user.model.js';
+import multer from 'multer';
+import path from 'path';
 
-export const create = (request, response, next) => {
-  const {
-    userId,
-    fullName,
-    email,
-    dob,
-    mobile,
-    city,
-    address,
-    imgUrl,
-    additionalInformation
-} = request.body;
 
-const newPersonal = new Personal({
-    userId : userId,
-    fullName : fullName,
-    email : email,
-    dob : dob,
-    mobile : mobile,
-    city : city,
-    address : address,
-    imgUrl : imgUrl,
-    additionalInformation : additionalInformation
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+  }
 });
 
-newPersonal.save()
-    .then(result => {
-        console.log(result);
-        return response.status(200).json({ msg: 'Personal profile created successfully', data: result });
-    })
-    .catch(err => {
-        console.log(err);
-        return response.status(500).json({ err: "Internal server error" , err});
-    });
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
 
+  if (mimetype && extname) {
+      return cb(null, true);
+  } else {
+      cb('Error: Images only!');
+  }
+}
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+      checkFileType(file, cb);
+  }
+}).single('image');
+
+export const create = (request, response, next) => {
+  upload(request, response, (err) => {
+    if (err) {
+        return response.status(400).json({ error: err });
+    } else {
+        const {
+          userId,
+          fullName,
+          email,
+          dob,
+          mobile,
+          city,
+          address,
+          additionalInformation
+      } = request.body;
+      const image = request.file ? request.file.path : null;
+      User.findById(userId)
+                .then(user => {
+                    if (!user) {
+                        return res.status(404).json({ error: "User not found" });
+                    }
+
+                    Personal.findOne({ userId })
+                        .then(existingProfile => {
+                            if (existingProfile) {
+                                return res.status(400).json({ error: "A Personal profile already exists for this user" });
+                            }
+
+                            
+                            const newPersonal = new Personal({
+                              userId,
+                              fullName,
+                              email,
+                              dob,
+                              mobile,
+                              city,
+                              address,
+                              image,
+                              additionalInformation
+                          });
+                          newPersonal.save()
+                          .then(result => {
+                              console.log(result);
+                              return response.status(200).json({ msg: 'Personal profile created successfully', data: result });
+                          })
+                          .catch(err => {
+                              console.log(err);
+                              return response.status(500).json({ err: "Internal server error" , err});
+                          });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            return res.status(500).json({ error: "Internal server error" });
+                        });
+                })
+                .catch(err => {
+                    console.error(err);
+                    return res.status(500).json({ error: "Internal server error" });
+                });
+        }
+
+      });
+    };
+
+export const update = async (req, res, next) => {
+  try {
+    const { personalId } = req.params;
+    const updateFields = req.body;
+
+    const updatedPersonal = await Personal.findOneAndUpdate(
+        { personalId: personalId },
+        updateFields,
+        { new: true } 
+    );
+    if (!updatedPersonal) {
+        return res.status(404).json({ error: "Personal profile not found" });
+    }
+
+    return res.status(200).json({ message: "Personal profile updated successfully", data: updatedPersonal });
+} catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal server error" });
+}
 };
 
-export const update = async (request, response, next) => {
-  const userId = request.body.userId;
 
+export const view = async (req, res, next) => {
   try {
-    if (!userId) {
-      return response.status(400).json({ error: 'User ID is required for updating.' });
-    }
+      const { personalId } = req.params;
 
-    const updatedPersonal = await Personal.findByIdAndUpdate(userId, request.body, { new: true });
+      const personalProfile = await Personal.findOne({ personalId: personalId });
 
-    if (updatedPersonal) {
-      return response.status(200).json({ message: 'User Data Updated Successfully.', data: updatedPersonal });
-    } else {
-      return response.status(404).json({ error: 'User not found.' });
-    }
+      if (!personalProfile) {
+          return res.status(404).json({ error: "Personal profile not found" });
+      }
+
+      return res.status(200).json({ data: personalProfile });
   } catch (error) {
-    return response.status(500).json({ error: 'Internal Server Error.', message: error.message });
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-export const view = (request, response, next) => {
-  Personal.find({})
-    .then(result => {
-      return response.status(200).json({ data: result });
-    })
-    .catch(err => {
-      return response.status(500).json({ error: "Internal Server Error.", message: err.message });
-    });
-};
 
-export const remove = async (request, response, next) => {
+
+export const deleteById = async (req, res, next) => {
   try {
-    const deletedPersonal = await Personal.findByIdAndDelete(request.body.id);
-    if (deletedPersonal) {
-      return response.status(200).json({ message: 'User removed successfully.' });
-    } else {
-      return response.status(404).json({ error: 'User not found.' });
-    }
-  } catch (err) {
-    console.error(err);
-    return response.status(500).json({ error: 'Internal Server Error.', message: err.message });
+      const { personalId } = req.params;
+
+      const deletedPersonal = await Personal.findOneAndDelete({ personalId: personalId });
+
+      if (!deletedPersonal) {
+          return res.status(404).json({ error: "Personal profile not found" });
+      }
+
+      return res.status(200).json({ message: "Personal profile deleted successfully" });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
   }
 };
