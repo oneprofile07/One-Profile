@@ -21,7 +21,22 @@ const userSchema = new Schema({
             const hashedPassword = bcrypt.hashSync(value, salt);
             return hashedPassword;
         }
+    },
+    userId: {
+        type: String,
+        unique: true,
     }
+});
+
+userSchema.pre('save', function (next) {
+    if (!this.userId) {
+       
+        const userPart = this.name.split(' ').join('_');
+        const randomPart = Math.floor(1000 + Math.random() * 9000); 
+        const userId = `${userPart}${randomPart}`;
+        this.userId = userId;
+    }
+    next();
 });
 
 userSchema.statics.checkPassword = function(originalPassword, encryptedPassword) {

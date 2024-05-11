@@ -14,9 +14,9 @@ export const signUp = async (request, response, next) => {
             password: request.body.password
         });
         
-        console.log("New User _id:", newUser._id); // Logging the _id
+        console.log("New User _id:", newUser._id);
         
-        request.session.userId = newUser._id; // Storing _id in session
+        request.session.userId = newUser._id; 
 
         return response.status(200).json({ data: newUser, message: "User created." });
     } catch (err) {
@@ -24,8 +24,6 @@ export const signUp = async (request, response, next) => {
         return response.status(500).json({ error: "Internal Server Error.", err });
     }
 };
-
-
 
 
 export const signIn = async (request, response, next) => {
@@ -50,68 +48,3 @@ export const signIn = async (request, response, next) => {
     }
 };
 
-export const update = async (request, response, next) => {
-    const { userId, name, email, password } = request.body;
-
-    if (!userId) {
-        return response.status(400).json({ error: 'User ID is required for updating.' });
-    }
-
-    try {
-        const updatedUser = await User.findByIdAndUpdate(userId, { name, email, password }, { new: true });
-
-        if (updatedUser) {
-            return response.status(200).json({ message: 'User Data Update Successful.', data: updatedUser });
-        } else {
-            return response.status(404).json({ error: 'User not found.' });
-        }
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: 'Internal Server Error.', err });
-    }
-};
-
-export const userList = async (request, response, next) => {
-    try {
-        const users = await User.find().lean();
-        console.log(users);
-        return response.status(200).json({ data: users });
-    } catch (err) {
-        console.log(err);
-        return response.status(500).json({ error: "Internal Server Error.", err });
-    }
-};
-
-export const getUserByEmail = async (request, response, next) => {
-    const { email } = request.body;
-
-    try {
-        const user = await User.findOne({ email }).lean();
-
-        if (user) {
-            return response.status(200).json({ data: user });
-        } else {
-            return response.status(404).json({ error: 'User not found.' });
-        }
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: "Internal Error", err });
-    }
-};
-
-export const remove = async (request, response, next) => {
-    const { id } = request.body;
-
-    try {
-        const deletedUser = await User.findByIdAndDelete(id);
-
-        if (deletedUser) {
-            return response.status(200).json({ message: 'User removed successfully.' });
-        } else {
-            return response.status(404).json({ error: 'User not found.' });
-        }
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: 'Internal Server Error.', err });
-    }
-};

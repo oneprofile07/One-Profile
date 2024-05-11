@@ -1,7 +1,7 @@
 import Share from "../model/share.model.js";
 import mongoose from "mongoose";
 
-export const add = async (req, res) => {
+export const  add = async (req, res) => {
   try {
     const { senderUserId, receiverUserId, profileId } = req.body;
     const newShare = await Share.create({ senderUserId, receiverUserId, profileId });

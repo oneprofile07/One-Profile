@@ -1,13 +1,11 @@
 import express from "express";
-import { create,view,viewById,viewId} from "../controller/professional.controller.js";
+import { create,view,update,deleteById} from "../controller/professional.controller.js";
 
 const router = express.Router();
 
 router.post("/create", create);
-// router.put("/update", update);
-router.get("/view", view);
-router.get("/viewById/:userId",viewById);
-router.post("/viewId", viewId);
-// router.delete("/remove", remove);
+router.put("/update/:professionalId",update)
+router.get("/view/:professionalId", view);
+router.delete("/remove/:professionalId", deleteById);
 
 export default router;
