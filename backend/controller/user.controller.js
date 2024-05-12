@@ -16,7 +16,7 @@ export const signUp = async (request, response, next) => {
         
         console.log("New User _id:", newUser._id);
         
-        request.session.userId = newUser._id; 
+        // request.session.userId = newUser._id; 
 
         return response.status(200).json({ data: newUser, message: "User created." });
     } catch (err) {

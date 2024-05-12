@@ -1,4 +1,5 @@
-import Professional from '../model/professinal.model.js';
+
+import Professional from '../model/professionals.model.js'
 import User from '../model/user.model.js';
 import multer from 'multer';
 import path from 'path';
