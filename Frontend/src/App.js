@@ -28,6 +28,7 @@ import SI from "./components/si.js";
 import Send from "./components/send.js";
 import ProfessionalProfileCard from "./components/professinalProfileCart.js";
 import Card from "./components/card.js";
+import OneProfile from "./components/Profile/profile.js";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="/notification" element={<Notification />} />
         <Route path="/createProfile" element={<CreateProfile />} />
         <Route path="/personal-form" element={<PersonalForm />} />
@@ -60,6 +62,9 @@ function App() {
         <Route path="/view Profile" element={<ProfessionalProfileCard/>}/>
         <Route path="/card" element={<Card />}/>
       
+
+
+      <Route path="/profile" element={<OneProfile/>}/>
       </Routes>
     </>
   );
