@@ -5,6 +5,7 @@ import { SignInForm } from "./components/User/Signin.js";
 import Footer from "./Footer.js";
 import Home from "./components/home.js";
 import Header from "./components/header.js";
+import UserProfile from "./components/UserProfiles/userProfile.js";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signin" element={<SignInForm />} />
         <Route path="/" element={<Home/>}/>
         <Route path="/header" element={<Header/>}/>
+        <Route path="/userprofile" element={<UserProfile/>}/>
       </Routes>
     </>
   );

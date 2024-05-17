@@ -89,8 +89,12 @@ export const SignInForm = () => {
                         </div>
                     </div>
                     <button type="button" style={{ marginLeft: "200px", border: "none", background: "white" }} className='text-secondary' >Forgot Password?</button>
-                    <input type="submit" className="btn btn-primary" value="Login" /><br/>
+                    <input type="submit" className="btn mt-2 btn-success form-control" value="Login" /><br/>
+                    <p>________________________or_____________________</p>
+                    <span className='border p-3 rounded'>
                     <FcGoogle style={{ width: "50px", height: "50px" }} />&nbsp;&nbsp;&nbsp;Sign In WIth Google
+
+                    </span>
                     <div className='d-flex' style={{ marginTop: "20px"}}>
                         <p style={{ marginLeft: "10px" }}>Don't have an account?</p>
                         <p style={{ marginLeft: "10px" }}><Link to="/signUp">Sign Up</Link></p>
