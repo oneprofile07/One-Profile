@@ -18,7 +18,7 @@ app.use(cors({
     origin: 'http://localhost:3001',
     credentials: true 
 }));
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use("/user", UserRouter);
 app.use('/professional', ProfessionalRouter);
