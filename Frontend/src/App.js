@@ -2,11 +2,14 @@
 import { Routes, Route } from "react-router-dom";
 import { SignUpForm } from "./components/User/Signup.js";
 import { SignInForm } from "./components/User/Signin.js";
-import Footer from "./Footer.js";
+
+import Footer from "./components/Footer.js";
 import Home from "./components/home.js";
 import Header from "./components/header.js";
 import UserProfile from "./components/UserProfiles/userProfile.js";
-
+import Contact from "./components/Contact.js";
+import About from "./components/About.js";
+import Services from "./components/Services.js";
 
 function App() {
   return (
@@ -17,7 +20,10 @@ function App() {
         <Route path="/signin" element={<SignInForm />} />
         <Route path="/" element={<Home/>}/>
         <Route path="/header" element={<Header/>}/>
+        <Route path="/about" element={<About/>}/>
         <Route path="/userprofile" element={<UserProfile/>}/>
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/service" element={<Services/>}/>
       </Routes>
     </>
   );

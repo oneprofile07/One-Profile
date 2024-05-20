@@ -1,12 +1,18 @@
 
 import { useNavigate } from 'react-router-dom';
-import Footer from '../Footer';
+import Footer from './Footer';
 import './home.css'
 import Header from './header';
+import Contact from './Contact';
+import About from './About';
+import Services from './Services';
 function Home() {
     const navigate = useNavigate();
     return <>
+    <div className='position-fixed w-100' style={{zIndex:5}}>
             <Header />
+
+    </div>
         <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
             <div class="container">
                 <div class="row">
@@ -22,7 +28,7 @@ function Home() {
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="white-button first-button scroll-to-section">
-                                                <button className='btn btn-primary' onClick={() => navigate("/signup")}>Join Us</button>
+                                                <button className='btn btn-success' onClick={() => navigate("/signup")}>Join Us</button>
                                             </div>
                                             <div class="white-button scroll-to-section">
                                                 <button className='btn btn-primary'>Contact Us</button>
@@ -41,6 +47,9 @@ function Home() {
                 </div>
             </div>
         </div>
+        <About/>
+        <Services/>
+        <Contact/>
         <Footer />
     </>
 }
