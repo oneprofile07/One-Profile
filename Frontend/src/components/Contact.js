@@ -43,7 +43,7 @@ export default function Contact() {
 
     return (
         <>
-            <main className='p-5 mt-5'>
+            <main className='p-5 mt-5' id='contact'>
                 <h2 className='container text-center'>Contact <span className='text-primary'> Us</span></h2>
                 <div className='container w-100 justify-content-center d-flex align-content-center'>
                     <p className='p-4 w-75 text-secondary text-center'>We value your feedback and are here to assist you with any inquiries you may have. Whether you have questions about our services, need support, or just want to get in touch, we're here to help.  </p>

@@ -8,11 +8,12 @@ import About from './About';
 import Services from './Services';
 function Home() {
     const navigate = useNavigate();
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
     return <>
-    <div className='position-fixed w-100' style={{zIndex:5}}>
+        <div className='position-fixed w-100' style={{ zIndex: 5 }}>
             <Header />
 
-    </div>
+        </div>
         <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
             <div class="container">
                 <div class="row">
@@ -27,12 +28,19 @@ function Home() {
                                             <p>With One Profile, you can say goodbye to the hassle of carrying multiple business cards or remembering to update your online profiles.</p>
                                         </div>
                                         <div class="col-lg-12">
-                                            <div class="white-button first-button scroll-to-section">
-                                                <button className='btn btn-success' onClick={() => navigate("/signup")}>Join Us</button>
-                                            </div>
-                                            <div class="white-button scroll-to-section">
-                                                <button className='btn btn-primary'>Contact Us</button>
-                                            </div>
+                                            {isLoggedIn === "true" ? (
+                                                <div class="white-button scroll-to-section">
+                                                    <button className='btn btn-primary'>Contact Us</button>
+                                                </div>
+                                            ) : (<>
+                                                <div class="white-button first-button scroll-to-section">
+                                                    <button className='btn btn-success' onClick={() => navigate("/signup")}>Join Us</button>
+                                                </div>
+                                                <div class="white-button scroll-to-section">
+                                                   <a href='#contact'><button className='btn btn-primary'>Contact Us</button></a> 
+                                                </div>
+                                            </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -47,9 +55,9 @@ function Home() {
                 </div>
             </div>
         </div>
-        <About/>
-        <Services/>
-        <Contact/>
+        <About />
+        <Services />
+        <Contact />
         <Footer />
     </>
 }

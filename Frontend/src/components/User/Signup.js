@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CiUser } from 'react-icons/ci';
 import { AiOutlineMail } from 'react-icons/ai';
 import { RiLockPasswordLine } from 'react-icons/ri';
-
+import { API } from '../API/URL';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -54,7 +54,7 @@ export const SignUpForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/user/signup', {
+            const response = await axios.post(API.signUp, {
                 email: email,
                 name: name,
                 password: password
@@ -68,9 +68,9 @@ export const SignUpForm = () => {
               });
             console.log(response.data); 
             const userId = response.data.data.userId; 
-            console.log(userId);
             localStorage.setItem('userId', userId); 
-            navigate("/home");
+            localStorage.setItem("isLoggedIn",true)
+            navigate("/");
            
         } catch (error) {
             console.error('Error signing up:', error);

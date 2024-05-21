@@ -7,7 +7,7 @@ import { TbPasswordUser } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import { API } from '../API/URL';
 
 export const SignInForm = () => {
     const [email, setEmail] = useState('');
@@ -20,7 +20,7 @@ export const SignInForm = () => {
 
         try {
             // Make API request to localhost:3000/user/signin using Axios
-            const response = await axios.post('http://localhost:3000/user/signin', {
+            const response = await axios.post(API.signIn, {
                 email,
                 password
             });
@@ -30,10 +30,10 @@ export const SignInForm = () => {
 
             if (response.status === 200) {
                 // Handle successful signin
-                console.log('Signin successful');
                 const userId = data.userId;
                 console.log(userId);
-                sessionStorage.setItem('userId', userId);
+                localStorage.setItem("isLoggedIn",true)
+                localStorage.setItem('userId', userId);
                 Swal.fire({
                     position: "top-center",
                     icon: "success",

@@ -1,26 +1,28 @@
 import React from 'react';
-import './header.css'
 import { FaUser } from 'react-icons/fa';
-
+import { useNavigate } from 'react-router-dom';
 const Header = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  
   return <>
   <header id="site-header">
-    <nav class="navbar navbar-expand-lg navbar-dark p-3 bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark p-2 fixed-top" style={{backgroundColor:'#3faaf5'}}>
       <div class="container">
-        <h2 class="navbar-brand fw-bold fs-4" href="index.html">OneProfile</h2>
+        <h2 class="navbar-brand fw-bold fs-2" href="index.html"><span style={{color:'red'}}>O</span>ne<span style={{color:'red'}}>P</span>rofile</h2>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav  mx-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav  mx-auto mb-2 mb-lg-0 fs-5">
             <li class="nav-item">
-              <a class="nav-link" href="#">Home</a>
+              <a class="nav-link active" href="#">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+              <a class="nav-link" href="#about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
+              <a class="nav-link" href="#service">Services</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
@@ -34,20 +36,24 @@ const Header = () => {
               </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Contact</a>
+              <a class="nav-link" href="#contact">Contact Us</a>
             </li>
           </ul>
           <div class="d-flex">
             <input className='input ps-2' type='search' placeholder='Type name...'/>
-            <button className='btn rounded-0 btn-outline-light'> Search</button>
+            <button className='btn btn-success rounded-0 btn-outline-light'> Search</button>
           </div> 
+          {isLoggedIn==="true"?(
+            <div className='d-flex'>
+              <FaUser className='text-white fs-2 m-2' style={{cursor:'pointer'}} onClick={()=>navigate("/userprofile")}/>
+              <p className='text-white fs-4 m-2'>Profile</p>
+              </div>
+          ):(
           <div className='text-white float-end m-2'>
-            <span className='border rounded btn btn-outline-secondary'>Sign in</span>
-            <span className='border rounded ms-2 btn btn-secondary'>Sign up</span>
+            <span className='border rounded btn btn-outline-secondary' onClick={()=>navigate("/signin")}>Sign in</span>
+            <span className='border rounded ms-2 btn btn-secondary'  onClick={()=>navigate("/signup")}>Sign up</span>
           </div>
+          )}
         </div>
       </div>
     </nav>
