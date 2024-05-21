@@ -1,7 +1,7 @@
 import Share from "../model/share.model.js";
 import mongoose from "mongoose";
 
-export const  add = async (req, res) => {
+export const add = async (req, res) => {
   try {
     const { senderUserId, receiverUserId, profileId } = req.body;
     const newShare = await Share.create({ senderUserId, receiverUserId, profileId });
@@ -11,6 +11,48 @@ export const  add = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
+
+
+// export const getSharesWithProfile = async (req, res) => {
+//   try {
+//     const receiverUserId = req.params.receiverUserId;
+
+//     const aggregationPipeline = [
+//       {
+//         $match: {
+//           receiverUserId: mongoose.Types.ObjectId(receiverUserId)
+//         }
+//       },
+//       {
+//         $lookup: {
+//           from: 'professionals',
+//           localField: 'profileId',
+//           foreignField: '_id',
+//           as: 'profile'
+//         }
+//       },
+//       {
+//         $unwind: '$profile'
+//       },
+//       {
+//         $project: {
+//           _id: 0,
+//           profile: 1
+//         }
+//       }
+//     ];
+
+//     const result = await Share.aggregate(aggregationPipeline);
+
+//     res.json(result);
+//   } catch (error) {
+//     console.error('Error:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// };
+
 
 
 const ObjectId = mongoose.Types.ObjectId; 

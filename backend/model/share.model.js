@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import User from "./user.model.js"; 
+import Professional from "./professinal.model.js"; 
 
 const shareSchema = new mongoose.Schema({
   senderUserId: {
