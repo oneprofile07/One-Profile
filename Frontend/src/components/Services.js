@@ -23,6 +23,8 @@ function Services() {
     // };
 
     return <>
+    <div id='service'>
+
         <h2 className='container text-center p-4 mt-5' >Our<span className='text-primary'> Services</span></h2>
         <div className='container align-content-center'>
             <p className='p-4 text-secondary text-center'>Digital profile cards are a modern and efficient way to showcase your identity and achievements across various aspects of your life. These cards are designed to be visually appealing and easy to share, making them perfect for personal branding, professional networking, and more. </p>
@@ -140,6 +142,7 @@ function Services() {
             </div>
 
         </div>
+    </div>
     </>
 }
 
