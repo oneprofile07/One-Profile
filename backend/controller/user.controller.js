@@ -1,50 +1,165 @@
-import { validationResult } from 'express-validator';
-import jwt from 'jsonwebtoken';
-import User from '../model/user.model.js';
+import User from "../model/user.model.js";
+import { upload } from '../model/user.model.js';
 
-export const signUp = async (request, response, next) => {
-    const errors = validationResult(request);
-    if (!errors.isEmpty())
-        return response.status(401).json({ errors: errors.array() });
-
+export const signUp = async (req, res) => {
     try {
-        const newUser = await User.create({
-            name: request.body.name,
-            email: request.body.email,
-            password: request.body.password
+        const { name,
+            email,
+            password,
+            gender,
+            address,
+            Dob,
+            contactNumber,
+            pincode,
+            city,
+            state } = req.body;
+        const image = req.file ? '/uploads/' + req.file.filename : undefined;
+
+        const user = new User({
+            name,
+            email,
+            password,
+            gender,
+            image,
+            address,
+            Dob,
+            contactNumber,
+            pincode,
+            city,
+            state
         });
-        
-        console.log("New User _id:", newUser._id);
-        
-        // request.session.userId = newUser._id; 
 
-        return response.status(200).json({ data: newUser, message: "User created." });
-    } catch (err) {
-        console.error(err);
-        return response.status(500).json({ error: "Internal Server Error.", err });
+        await user.save();
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
-};
+}
 
 
-export const signIn = async (request, response, next) => {
-    const { email, password } = request.body;
-
+export const signIn = async (req, res) => {
     try {
+        const { email, password } = req.body;
+
         const user = await User.findOne({ email });
 
-        if (user) {
-            if (User.checkPassword(password, user.password)) {
-                const token = jwt.sign({ userId: user._id }, 'secret_key', { expiresIn: '1h' });
-                return response.status(200).json({ message: "Sign In Success", token });
-            } else {
-                return response.status(401).json({ error: "Unauthorized error" });
-            }
-        } else {
-            return response.status(401).json({ error: "Invalid Email or Password" });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid email or password' });
         }
+
+        const isMatch = await user.checkPassword(password);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+
+        res.status(200).json({ message: "Sign In Successfully", data: user });
     } catch (error) {
-        console.error(error);
-        return response.status(500).json({ error: "Internal Server Error", message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
+
+
+export const viewUser = async (req, res) => {
+    try {
+        const userId = req.params._Id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+export const updateUser = async (req, res) => {
+    try {
+        const userId = req.params._Id;
+        const { name, contactNumber , email, gender, address, Dob,state, city, pincode } = req.body;
+        const image = req.file ? '/uploads/' + req.file.filename : undefined;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.name = name || user.name;
+        user.contactNumber = contactNumber || user.contactNumber;
+        user.email = email || user.email;
+        user.gender = gender || user.gender;
+        user.address = address || user.address;
+        user.Dob = Dob || user.Dob;
+        user.state = state || user.state;
+        user.city = city || user.city;
+        user.pincode = pincode || user.pincode;
+        
+        if (image) {
+            user.image = image;
+        }
+
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const uploadMiddleware = upload.single('image');
+
+
+
+export const remove = async (req, res) => {
+    try {
+        const userId = req.params._Id;
+        const user = await User.findByIdAndDelete(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+import bcrypt from 'bcryptjs';
+
+
+export const changePassword = async (req, res) => {
+    try {
+        const userId = req.params._Id;
+        const { oldPassword, newPassword } = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid old password' });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        user.password = hashedPassword;
+        await user.save();
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
+
+
+
 

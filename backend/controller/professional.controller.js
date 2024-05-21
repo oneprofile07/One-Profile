@@ -1,9 +1,9 @@
-
-import Professional from '../model/professionals.model.js'
+import Professional from '../model/professinal.model.js';
 import User from '../model/user.model.js';
 import multer from 'multer';
 import path from 'path';
 
+// Set storage engine
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/');
@@ -13,6 +13,7 @@ const storage = multer.diskStorage({
     }
 });
 
+// Check file type
 function checkFileType(file, cb) {
     const filetypes = /jpeg|jpg|png/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -25,6 +26,7 @@ function checkFileType(file, cb) {
     }
 }
 
+// Init multer upload
 const upload = multer({
     storage: storage,
     fileFilter: function (req, file, cb) {
@@ -57,12 +59,14 @@ export const create = (req, res, next) => {
                         return res.status(404).json({ error: "User not found" });
                     }
 
+                    // Check if a professional profile already exists for this user
                     Professional.findOne({ userId })
                         .then(existingProfile => {
                             if (existingProfile) {
                                 return res.status(400).json({ error: "A professional profile already exists for this user" });
                             }
 
+                            // User exists, create professional profile
                             const newProfessional = new Professional({
                                 userId,
                                 fullName,
@@ -106,10 +110,11 @@ export const update = async (req, res, next) => {
         const { professionalId } = req.params;
         const updateFields = req.body;
 
+        // Find the professional profile by professionalId and update it
         const updatedProfessional = await Professional.findOneAndUpdate(
             { professionalId: professionalId },
             updateFields,
-            { new: true } 
+            { new: true } // To return the updated document
         );
 
         if (!updatedProfessional) {
@@ -129,6 +134,7 @@ export const deleteById = async (req, res, next) => {
     try {
         const { professionalId } = req.params;
 
+        // Find the professional profile by professionalId and delete it
         const deletedProfessional = await Professional.findOneAndDelete({ professionalId: professionalId });
 
         if (!deletedProfessional) {
@@ -146,8 +152,9 @@ export const deleteById = async (req, res, next) => {
 
 export const view = async (req, res, next) => {
     try {
-        const { professionalId } = req.params;
+        const  {professionalId} = req.params;
 
+        // Find the professional profile by professionalId
         const professionalProfile = await Professional.findOne({ professionalId: professionalId });
 
         if (!professionalProfile) {
@@ -161,12 +168,31 @@ export const view = async (req, res, next) => {
     }
 };
 
+export const viewId = async (req, res, next) => {
+    try {
+        const { professionalId, userId } = req.body;
 
+        // Validate that both professionalId and userId are provided
+        if (!professionalId || !userId) {
+            return res.status(400).json({ err: "professionalId and userId are required" });
+        }
 
+        // Find the professional profile using the professionalId and userId
+        const professionalProfile = await Professional.find({
+            professionalId: professionalId,
+            userId: userId
+        }).exec();
+        
+        if (!professionalProfile || professionalProfile.length === 0) {
+            return res.status(404).json({ err: "No professional found with the given userId and professionalId" });
+        }
 
-
-
-
+        return res.status(200).json({ data: professionalProfile });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ err: "Internal server error" });
+    }
+};
 
 
 

@@ -67,7 +67,7 @@ export const SignUpForm = () => {
                 timer: 1500
               });
             console.log(response.data); 
-            const userId = response.data.data.userId; 
+            const userId = response.data._id; 
             localStorage.setItem('userId', userId); 
             localStorage.setItem("isLoggedIn",true)
             navigate("/");

@@ -1,0 +1,20 @@
+           *********** professional Profile Api *******************
+
+view Profiele By ProfileId = http://localhost:3000/professional/view/:professionalId        - get
+create profile             = http://localhost:3000/professional/create                      - post
+Update Profiele            = http://localhost:3000/professional/update/:professionalId      - put
+Delete Profiele            = http://localhost:3000/professional/remove/:professionalId      - Delete
+
+View Profile By UserId     = http://localhost:3000/professional/viewByUserId                - get
+and Profile Id   
+
+
+            *********** User Api *******************
+
+signUp                     = http://localhost:3000/user/signup                              - post
+SignIn                     = http://localhost:3000/user/signIn                              - post
+View                       = http://localhost:3000/user/viewById/:_Id                       - get
+Update                     = http://localhost:3000/user/updateById/:_Id                     - put
+Change Password            = http://localhost:3000/user/changePassword/:_Id                 - put
+Delete User                = http://localhost:3000/user/remove/:_Id"                        - delete 
+
