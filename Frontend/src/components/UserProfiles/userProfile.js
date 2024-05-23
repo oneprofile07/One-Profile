@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
+import axios from 'axios';
+import ProfessionalProfile from './professionalProfile';
+import MedicalProfile from './medicalProfile';
+import EducationProfile from './educationProfile';
+import PersonalProfile from './personalProfile';
+import CustomizedProfile from './customizedProfile';
+import { useNavigate } from 'react-router-dom';
 export default function UserProfile() {
+    const navigate = useNavigate();
     const Name = document.getElementById('name');
-    const Image = document.getElementById('image');
     const Email = document.getElementById('email');
     const ContactNumber = document.getElementById('contactNumber');
     const State = document.getElementById('state');
@@ -35,7 +41,6 @@ export default function UserProfile() {
     const [buttondisplyblock, setbuttondisplyblock] = useState(true);
     const [buttondisplyblock2, setbuttondisplyblock2] = useState(true);
     const [name, setname] = useState("");
-    const [image, setimage] = useState("");
     const [email, setemail] = useState("");
     const [contactNumber, setcontactNumber] = useState("");
     const [gender, setgender] = useState("");
@@ -67,6 +72,7 @@ export default function UserProfile() {
             }
         }
     };
+
     const MyAddress = () => {
         if (id !== "" && state !== "" && city !== "" && address !== "" && pincode !== "") {
             if (userData2 !== "") {
@@ -87,6 +93,7 @@ export default function UserProfile() {
             }
         }
     };
+
     const ChangePassword = () => {
         if (id !== "" && oldpassword !== "" && newpassword !== "" && conformpassword !== "") {
             if (newpassword === conformpassword) {
@@ -114,12 +121,6 @@ export default function UserProfile() {
     const handleButtonClick = (divId) => {
         setVisibleDiv(divId);
     };
-    // const templates = ["./Images/1.png", "./Images/2.png", "./Images/3.png", "./Images/4.png", "./Images/5.png", "./Images/6.png", "./Images/7.png", "./Images/8.png", "./Images/9.png", "./Images/10.png", "./Images/11.png", "./Images/12.png", "./Images/13.png", "./Images/14.png", "./Images/15.png", "./Images/16.png", "./Images/17.png", "./Images/18.png", "./Images/19.png",]
-    const templates = [{ img1: "./Images/21.png", img2: "./Images/21.png", textcolor: "black" }, { img1: "./Images/15.png", img2: "./Images/15.png", textcolor: "black" }, { img1: "./Images/1.png", img2: "./Images/1.png", textcolor: "white" }, { img1: "./Images/2.png", img2: "./Images/3.png", textcolor: "black" }, { img1: "./Images/4.png", img2: "./Images/5.png", textcolor: "black" }, { img1: "./Images/6.png", img2: "./Images/21.png", textcolor: "black" }, { img1: "./Images/7.png", img2: "./Images/21.png", textcolor: "black" }, { img1: "./Images/8.png", img2: "./Images/21.png", textcolor: "black" }, { img1: "./Images/9.png", img2: "./Images/15.png", textcolor: "black" }, { img1: "./Images/10.png", img2: "./Images/22.png", textcolor: "black" }, { img1: "./Images/11.png", img2: "./Images/20.png", textcolor: "black" }, { img1: "./Images/12.png", img2: "./Images/12.png", textcolor: "white" }, { img1: "./Images/13.png", img2: "./Images/13.png", textcolor: "white" }, { img1: "./Images/14.png", img2: "./Images/15.png", textcolor: "black" }, { img1: "./Images/16.png", img2: "./Images/17.png", textcolor: "black" }, { img1: "./Images/18.png", img2: "./Images/18.png", textcolor: "white" }, { img1: "./Images/19.png", img2: "./Images/19.png", textcolor: "white" }];
-    const [personalProfileCard, setpersonalProfileCard] = useState([{ img1: "./Images/16.png", img2: "./Images/17.png", textcolor: "black" }]);
-    const [educationProfileCard, seteducationProfileCard] = useState([{ img1: "./Images/1.png", img2: "./Images/1.png", textcolor: "white" }]);
-    const [professionalProfileCard, setprofessionalProfileCard] = useState([{ img1: "./Images/12.png", img2: "./Images/12.png", textcolor: "white" }]);
-    const [medicalProfileCard, setmedicalProfileCard] = useState([{ img1: "./Images/4.png", img2: "./Images/5.png", textcolor: "black" }]);
 
     return <>
         <div className="container-fluid py-4" style={{ background: "#292e39" }}>
@@ -151,14 +152,24 @@ export default function UserProfile() {
                                         <h6 className="m-0 p-2 rounded-2  h-100 w-100">Change Password</h6>
                                     </li>
                                     <hr className='m-0 border-white border' />
-                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" >
-                                        <select className="form-select m-0 p-2 rounded-2 bg-transparent text-white border-0 h-100 w-100" aria-label="Default select example" onChange={(event) => { handleButtonClick(event.target.value * 1); }} >
-                                            <option className='text-light bg-dark' value="Profiles">Profiles</option>
-                                            <option className='text-light bg-dark' value="4">Personal Profile</option>
-                                            <option className='text-light bg-dark' value="5">Education Profile</option>
-                                            <option className='text-light bg-dark' value="6">Professional profile</option>
-                                            <option className='text-light bg-dark' value="7">Medical Profile</option>
-                                        </select>
+                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(4); }}>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100">Personal Profile</h6>
+                                    </li>
+                                    <hr className='m-0 border-white border' />
+                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(5); }}>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100">Education Profile</h6>
+                                    </li>
+                                    <hr className='m-0 border-white border' />
+                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(7); }}>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100">Professional profile</h6>
+                                    </li>
+                                    <hr className='m-0 border-white border' />
+                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(9); }}>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100">Medical Profile</h6>
+                                    </li>
+                                    <hr className='m-0 border-white border' />
+                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(11); }}>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100" onClick={()=>navigate("/editCart")}>Customized Profile</h6>
                                     </li>
                                     <hr className='m-0 border-white border' />
                                 </ul>
@@ -192,6 +203,14 @@ export default function UserProfile() {
                                     </div>
                                     <div className="col-sm-9 text-secondary">
                                         <input type="number" className="form-control fs-6 " onChange={(event) => setcontactNumber(event.target.value)} id='contactNumber' placeholder='Enter Contact Number' disabled={disabledinput} value={userData2.contactNumber} />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Date of Birth</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="number" className="form-control fs-6 " id='dob' placeholder='Enter Contact Number' disabled={disabledinput} />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
@@ -301,222 +320,215 @@ export default function UserProfile() {
                             {/* Personal Profile ========================================= */}
                             <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 4 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Personal Profile</h4>
-                                <div className='d-flex flex-wrap justify-content-evenly gap-4'>
-                                    <div className="card personalcard1-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${personalProfileCard[0].textcolor}`, background: `url(${personalProfileCard[0].img1}) center/cover no-repeat` }}>
-                                        <div className="card-body p-3 pt-4 p-0 m-0">
-                                            <img src="https://media.licdn.com/dms/image/C5103AQHWU6LKrww52A/profile-displayphoto-shrink_200_200/0/1516948926786?e=2147483647&v=beta&t=5Z7Gsz_fw-wQ-WixlcXT3_FT5lIKJoivkcIrttx6wQ4" className="rounded-circle bg-transparent m-0 p-0" width="45px" height="45px" alt="..." />
-                                            <h5 className="card-title fs-6 m-0 p-0">Swami Vivekanand College</h5>
-                                            <hr className='my-3' />
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="m-0 rounded-circle bg-light border border-3 border-secondary p-1 bg-light" width="140px" height="140px" alt="..." />
-                                            <p className="card-text p-0 m-0">Raj Thakur</p>
-                                            <p className="card-text p-0 m-0">8827142011</p>
-                                            <p className="card-text p-0 m-0">rajthakur8827142011@gmail.com</p>
-                                            <hr className='my-1' />
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="text-secondary card-text p-0 m-0">Course :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">B.Tech</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Branch :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">IT</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Roll no :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">0822IT211041</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="card personalcard2-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${personalProfileCard[0].textcolor}`, background: `url(${personalProfileCard[0].img2}) center/cover no-repeat` }}>
-                                        <div className="card-body p-4 py-5 p-0 m-0">
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="card-text p-0 m-0">Address:-</p>
-                                                <p className="card-text text-secondary text-end p-0 m-0">Sant Nagar, Near by gurudwara, khandwa Naka, Indore</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">CGPA :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">7.24 CGPA</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Passing :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">June 2025</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Date of Birth :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">29 Oct 2002</p>
-                                            </div>
-                                            <hr />
-                                            <p className="card-text text-secondary p-0 m-0">khandwa Road, Near By Toll Naka, Indore (Madhya Predesh)</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="container text-center d-flex gap-3 flex-nowrap overflow-auto bg-secondary overflow-x-scroll mt-3 p-2" style={{ scrollbarWidth: "none", boxShadow: "0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%)" }}>
-                                    {templates.map((img, index) => <div key={index} className="card shadow border border-dark" id="view_hover" style={{ flex: "0 0 auto" }}>
-                                        <img src={img.img1} onClick={() => setpersonalProfileCard([{ img1: img.img1, img2: img.img2, textcolor: img.textcolor }])} className="card-img" style={{ width: "50px", cursor: "pointer" }} height={90} alt="..." />
-                                    </div>)}
-                                </div>
+                                <PersonalProfile />
                             </div>
                             {/* Education Profile ========================================= */}
                             <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 5 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Education Profile</h4>
-                                <div className='d-flex flex-wrap justify-content-evenly gap-4'>
-                                    <div className="card personalcard1-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${educationProfileCard[0].textcolor}`, background: `url(${educationProfileCard[0].img1}) center/cover no-repeat` }}>
-                                        <div className="card-body p-3 pt-4 p-0 m-0">
-                                            <img src="https://media.licdn.com/dms/image/C5103AQHWU6LKrww52A/profile-displayphoto-shrink_200_200/0/1516948926786?e=2147483647&v=beta&t=5Z7Gsz_fw-wQ-WixlcXT3_FT5lIKJoivkcIrttx6wQ4" className="rounded-circle bg-transparent m-0 p-0" width="45px" height="45px" alt="..." />
-                                            <h5 className="card-title fs-6 m-0 p-0">Swami Vivekanand College</h5>
-                                            <hr className='my-3' />
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="m-0 rounded-circle bg-light border border-3 border-secondary p-1 bg-light" width="140px" height="140px" alt="..." />
-                                            <p className="card-text p-0 m-0">Raj Thakur</p>
-                                            <p className="card-text p-0 m-0">8827142011</p>
-                                            <p className="card-text p-0 m-0">rajthakur8827142011@gmail.com</p>
-                                            <hr className='my-1' />
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="text-secondary card-text p-0 m-0">Course :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">B.Tech</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Branch :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">IT</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Roll no :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">0822IT211041</p>
-                                            </div>
-                                        </div>
+                                <EducationProfile />
+                                <button className="btn btn-dark mt-3 p-1 py-2" onClick={() => { handleButtonClick(6); }} >Update Details</button>
+                            </div>
+                            {/* Edit Education Profile ============================================================ */}
+                            <div className="card-body pt-1" style={{ display: visibleDiv === 6 ? "block" : "none" }}>
+                                <h4 className="mb-4 fw-bold text-center">Edit Education Details</h4>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">City</h6>
                                     </div>
-                                    <div className="card personalcard2-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${educationProfileCard[0].textcolor}`, background: `url(${educationProfileCard[0].img2}) center/cover no-repeat ` }}>
-                                        <div className="card-body p-4 py-5 p-0 m-0">
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="card-text p-0 m-0">Address:-</p>
-                                                <p className="card-text text-secondary text-end p-0 m-0">Sant Nagar, Near by gurudwara, khandwa Naka, Indore</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">CGPA :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">7.24 CGPA</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Passing :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">June 2025</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Date of Birth :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">29 Oct 2002</p>
-                                            </div>
-                                            <hr />
-                                            <p className="card-text text-secondary p-0 m-0">khandwa Road, Near By Toll Naka, Indore (Madhya Predesh)</p>
-                                        </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Address' />
                                     </div>
                                 </div>
-                                <div className="container text-center d-flex gap-3 flex-nowrap overflow-auto bg-secondary overflow-x-scroll mt-3 p-2" style={{ scrollbarWidth: "none", boxShadow: "0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%)" }}>
-                                    {templates.map((img, index) => <div key={index} className="card shadow border border-dark" id="view_hover" style={{ flex: "0 0 auto" }}>
-                                        <img src={img.img1} onClick={() => seteducationProfileCard([{ img1: img.img1, img2: img.img2, textcolor: img.textcolor }])} className="card-img" style={{ width: "50px", cursor: "pointer" }} height={90} alt="..." />
-                                    </div>)}
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Address</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Address' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">UG Institute Name:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Institute Name' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Graduation:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Affileted' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">UG CGPA:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Corse' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Passout Year:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Branch' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">PG Institute Name:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Institute Name' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Post Graduation:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Affileted' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">PG CGPA:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Corse' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Passout Year:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Branch' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Additional Information:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <textarea type="text" className="form-control fs-6 " placeholder='Enter Branch' />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-3"></div>
+                                    <div className="col-sm-9 text-secondary gap-2 d-flex">
+                                        <button className="btn btn-dark p-1 py-2" onClick={() => { handleButtonClick(5); }} >--- Back ---</button>
+                                        <button className="btn btn-dark p-1 py-2" >Save Changes</button>
+                                    </div>
                                 </div>
                             </div>
                             {/* Professional Profile ========================================= */}
-                            <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 6 ? "flex" : "none" }}>
+                            <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 7 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Professional Profile</h4>
-                                <div className='d-flex flex-wrap justify-content-evenly gap-4'>
-                                    <div className="card personalcard1-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${professionalProfileCard[0].textcolor}`, background: `url(${professionalProfileCard[0].img1}) center/cover no-repeat ` }}>
-                                        <div className="card-body p-4 pt-5 mt-3 p-0 m-0">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="m-0 rounded-circle bg-light border border-3 border-secondary p-1 bg-light" width="120px" height="120px" alt="..." />
-                                            <h5 className="card-title text-secondary fs-6 m-0 p-0">Project Manager</h5>
-                                            <p className="card-text fs-3 p-0 mb-3">Raj Thakur</p>
-                                            <p className="card-text text-secondary text-start p-0 m-0 my-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-plus-fill" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zM12.5 1a.5.5 0 0 1 .5.5V3h1.5a.5.5 0 0 1 0 1H13v1.5a.5.5 0 0 1-1 0V4h-1.5a.5.5 0 0 1 0-1H12V1.5a.5.5 0 0 1 .5-.5" />
-                                            </svg> 8827142011</p>
-                                            <p className="card-text text-secondary text-start p-0 m-0 my-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-                                                <path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08z" />
-                                            </svg> rajthakur8827142011@gmail .com</p>
-                                            <p className="card-text text-secondary text-start p-0 m-0 my-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
-                                            </svg> khandwa Road, Near By Toll Naka, Indore (Madhya Predesh)</p>
-                                        </div>
+                                <ProfessionalProfile />
+                                <button className="btn btn-dark mt-3 p-1 py-2" onClick={() => { handleButtonClick(8); }} >Update Details</button>
+                            </div>
+                            {/* Edit Professional Profile ============================================================ */}
+                            <div className="card-body pt-1" style={{ display: visibleDiv === 8 ? "block" : "none" }}>
+                                <h4 className="mb-4 fw-bold text-center">Edit Professional Details</h4>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Organisation:</h6>
                                     </div>
-                                    <div className="card personalcard2-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${professionalProfileCard[0].textcolor}`, background: `url(${professionalProfileCard[0].img2}) center/cover no-repeat ` }}>
-                                        <div className="card-body p-4 py-5 p-0 m-0">
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="card-text p-0 m-0">Address:-</p>
-                                                <p className="card-text text-secondary text-end p-0 m-0">Sant Nagar, Near by gurudwara, khandwa Naka, Indore</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">CGPA :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">7.24 CGPA</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Passing :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">June 2025</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Date of Birth :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">29 Oct 2002</p>
-                                            </div>
-                                            <hr />
-                                            <p className="card-text text-secondary p-0 m-0">khandwa Road, Near By Toll Naka, Indore (Madhya Predesh)</p>
-                                        </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Organisation Name' />
                                     </div>
                                 </div>
-                                <div className="container text-center d-flex gap-3 flex-nowrap overflow-auto bg-secondary overflow-x-scroll mt-3 p-2" style={{ scrollbarWidth: "none", boxShadow: "0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%)" }}>
-                                    {templates.map((img, index) => <div key={index} className="card shadow border border-dark" id="view_hover" style={{ flex: "0 0 auto" }}>
-                                        <img src={img.img1} onClick={() => setprofessionalProfileCard([{ img1: img.img1, img2: img.img2, textcolor: img.textcolor }])} className="card-img" style={{ width: "50px", cursor: "pointer" }} height={90} alt="..." />
-                                    </div>)}
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Designation:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Designation' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Mobile:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Contact' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Professional Address:</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Address' />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-3"></div>
+                                    <div className="col-sm-9 text-secondary gap-2 d-flex">
+                                        <button className="btn btn-dark p-1 py-2" onClick={() => { handleButtonClick(7); }} >--- Back ---</button>
+                                        <button className="btn btn-dark p-1 py-2" >Save Changes</button>
+                                    </div>
                                 </div>
                             </div>
                             {/* Medical Profile ========================================= */}
-                            <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 7 ? "flex" : "none" }}>
+                            <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 9 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Medical Profile</h4>
-                                <div className='d-flex flex-wrap justify-content-evenly gap-4'>
-                                    <div className="card personalcard1-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${medicalProfileCard[0].textcolor}`, background: `url(${medicalProfileCard[0].img1}) center/cover no-repeat` }}>
-                                        <div className="card-body p-3 pt-4 p-0 m-0">
-                                            <img src="https://media.licdn.com/dms/image/C5103AQHWU6LKrww52A/profile-displayphoto-shrink_200_200/0/1516948926786?e=2147483647&v=beta&t=5Z7Gsz_fw-wQ-WixlcXT3_FT5lIKJoivkcIrttx6wQ4" className="rounded-circle bg-transparent m-0 p-0" width="45px" height="45px" alt="..." />
-                                            <h5 className="card-title fs-6 m-0 p-0">Swami Vivekanand College</h5>
-                                            <hr className='my-3' />
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="m-0 rounded-circle bg-light border border-3 border-secondary p-1 bg-light" width="140px" height="140px" alt="..." />
-                                            <p className="card-text p-0 m-0">Raj Thakur</p>
-                                            <p className="card-text p-0 m-0">8827142011</p>
-                                            <p className="card-text p-0 m-0">rajthakur8827142011@gmail.com</p>
-                                            <hr className='my-1' />
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="text-secondary card-text p-0 m-0">Course :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">B.Tech</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Branch :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">IT</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="text-secondary card-text p-0 m-0">Roll no :-</p>
-                                                <p className="text-secondary card-text p-0 m-0">0822IT211041</p>
-                                            </div>
-                                        </div>
+                                <MedicalProfile />
+                                <button className="btn btn-dark mt-3 p-1 py-2" onClick={() => { handleButtonClick(10); }} >Update Details</button>
+                            </div>
+                            {/* Edit Medical Profile ============================================================ */}
+                            <div className="card-body pt-1" style={{ display: visibleDiv === 10 ? "block" : "none" }}>
+                                <h4 className="mb-4 fw-bold text-center">Edit Medical Details</h4>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Blood Group</h6>
                                     </div>
-                                    <div className="card personalcard2-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: ` ${medicalProfileCard[0].textcolor}`, background: `url(${medicalProfileCard[0].img2}) center/cover no-repeat` }}>
-                                        <div className="card-body p-4 py-5 p-0 m-0">
-                                            <div className='d-flex justify-content-between'>
-                                                <p className="card-text p-0 m-0">Address:-</p>
-                                                <p className="card-text text-secondary text-end p-0 m-0">Sant Nagar, Near by gurudwara, khandwa Naka, Indore</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">CGPA :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">7.24 CGPA</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Passing :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">June 2025</p>
-                                            </div>
-                                            <div className='d-flex justify-content-between mt-2'>
-                                                <p className="card-text p-0 m-0">Date of Birth :-</p>
-                                                <p className="card-text text-secondary p-0 m-0">29 Oct 2002</p>
-                                            </div>
-                                            <hr />
-                                            <p className="card-text text-secondary p-0 m-0">khandwa Road, Near By Toll Naka, Indore (Madhya Predesh)</p>
-                                        </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Blood Group' />
                                     </div>
                                 </div>
-                                <div className="container text-center d-flex gap-3 flex-nowrap overflow-auto bg-secondary overflow-x-scroll mt-3 p-2" style={{ scrollbarWidth: "none", boxShadow: "0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%)" }}>
-                                    {templates.map((img, index) => <div key={index} className="card shadow border border-dark" id="view_hover" style={{ flex: "0 0 auto" }}>
-                                        <img src={img.img1} onClick={() => setmedicalProfileCard([{ img1: img.img1, img2: img.img2, textcolor: img.textcolor }])} className="card-img" style={{ width: "50px", cursor: "pointer" }} height={90} alt="..." />
-                                    </div>)}
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Height</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Height' />
+                                    </div>
                                 </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Weight</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Enter Weight' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-sm-3 mb-2">
+                                        <h6 className="mb-0">Medical History</h6>
+                                    </div>
+                                    <div className="col-sm-9 text-secondary">
+                                        <input type="text" className="form-control fs-6 " placeholder='Medical History' />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-sm-3"></div>
+                                    <div className="col-sm-9 text-secondary gap-2 d-flex">
+                                        <button className="btn btn-dark p-1 py-2" onClick={() => { handleButtonClick(9); }} >--- Back ---</button>
+                                        <button className="btn btn-dark p-1 py-2" >Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Customized Profile ========================================= */}
+                            <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 11 ? "flex" : "none" }}>
+                                <h4 className="mb-4 fw-bold text-center">Customized Profile</h4>
+                                <CustomizedProfile />
                             </div>
                         </div>
                     </div>

@@ -41,7 +41,7 @@ export const SignInForm = () => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                navigate("/home");
+                navigate("/");
             } else {
                 // Handle signin failure
                 console.error('Signin failed');
