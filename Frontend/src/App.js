@@ -10,6 +10,7 @@ import UserProfile from "./components/UserProfiles/userProfile.js";
 import Contact from "./components/Contact.js";
 import About from "./components/About.js";
 import Services from "./components/Services.js";
+import CustomiseProfile from "./components/UserProfiles/customizedProfile.js";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/userprofile" element={<UserProfile/>}/>
         <Route path="/contact" element={<Contact />} />
         <Route path="/service" element={<Services/>}/>
+        <Route path="/editCart" element={<CustomiseProfile/>}/>
       </Routes>
     </>
   );
