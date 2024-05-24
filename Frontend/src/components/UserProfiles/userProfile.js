@@ -611,7 +611,6 @@ export default function UserProfile() {
                             <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 7 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Professional Profile</h4>
                                 <ProfessionalProfile />
-                                <button className="btn btn-dark mt-3 p-1 py-2" onClick={() => { handleButtonClick(8); }} >Update Details</button>
                             </div>
                             {/* Edit Professional Profile ============================================================ */}
                             <div className="card-body pt-1" style={{ display: visibleDiv === 8 ? "block" : "none" }}>

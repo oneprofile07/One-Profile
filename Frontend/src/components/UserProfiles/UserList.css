@@ -1,0 +1,43 @@
+.list-group {
+    padding-left: 0;
+    margin-bottom: 20px;
+    list-style: none;
+  }
+  
+  .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+  }
+  
+  .user-item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .user-index,
+  .user-name,
+  .user-email {
+    flex: 1;
+    text-align: left;
+    padding: 0 20px;
+  }
+  
+  .user-index {
+    flex: 0 0 50px;
+    text-align: center;
+  }
+  
+  .user-name {
+    flex: 2;
+  }
+  
+  .user-email {
+    flex: 3;
+  }
+  

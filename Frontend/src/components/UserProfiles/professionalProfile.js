@@ -61,6 +61,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {  useLocation, useNavigate } from "react-router-dom";
+import { IoIosShareAlt } from "react-icons/io";
+
 
 export default function ProfessionalProfile() {
 
@@ -114,9 +116,17 @@ export default function ProfessionalProfile() {
 
     return (
         <>
+        <IoIosShareAlt  style={{
+          color: '#007bff', // Change the color of the icon
+          fontSize: '60px', // Adjust the size of the icon
+          marginLeft:"700px",
+          cursor:"pointer"
+        }} onClick={()=>navigate("/UserList")}/>
             <div className='d-flex flex-wrap justify-content-evenly gap-4'>
+                
                 {profileData && profileData.length > 0 ? profileData.map((profile, index) => (
                     <div key={index} className="card personalcard1-img d-flex align-items-center justify-content-center flex-column text-center" style={{ width: "18rem", height: "500px", color: `${professionalProfileCard.textcolor}`, background: `url(${professionalProfileCard.img1}) center/cover no-repeat ` }}>
+                        
                         <div className="card-body p-4 pt-5 mt-3 p-0 m-0">
                             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" className="m-0 rounded-circle bg-light border border-3 border-secondary p-1 bg-light" width="120px" height="120px" alt="..." />
                             <h5 className="card-title text-secondary fs-6 m-0 p-0">{profile.designation}</h5>
@@ -154,7 +164,7 @@ export default function ProfessionalProfile() {
                 ))}
             </div>
 
-            <button className="btn btn-success" onClick={updateForm}>Update</button>
+            <button className="btn btn-dark mt-3 p-1 py-2" onClick={updateForm}>Update</button>
 
         </>
 
