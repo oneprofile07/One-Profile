@@ -66,7 +66,7 @@ export const SignUpForm = () => {
                 showConfirmButton: false,
                 timer: 1500
               });
-            console.log(response.data); 
+            console.log(response.data._id); 
             const userId = response.data._id; 
             localStorage.setItem('userId', userId); 
             localStorage.setItem("isLoggedIn",true)

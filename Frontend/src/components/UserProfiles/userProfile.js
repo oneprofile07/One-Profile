@@ -7,6 +7,7 @@ import EducationProfile from './educationProfile';
 import PersonalProfile from './personalProfile';
 import CustomizedProfile from './customizedProfile';
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 export default function UserProfile() {
     const navigate = useNavigate();
     const Name = document.getElementById('name');
@@ -18,15 +19,16 @@ export default function UserProfile() {
     const Pincode = document.getElementById('pincode');
     const [userData, setuserData] = useState([]);
     const [userData2, setuserData2] = useState([]);
-    // let id = localStorage.getItem('userId');
-    let id = 1;
+    let _Id = localStorage.getItem('userId');
+    
+    // let id = 1;
     const UserInformation = () => {
         setbuttondisplyblock(true)
         setbuttondisplyblock2(true)
-        axios.post("http://localhost:3005/user/viewuserbyid", { id })
+        axios.get(`http://localhost:3000/user/viewById/${_Id}`)
             .then(response => {
-                setuserData(response.data.data);
-                setuserData2(response.data.data);
+                setuserData(response.data);
+                setuserData2(response.data);
                 setdisabledinput(1);
             }).catch(err => {
                 console.log(err);
@@ -34,8 +36,8 @@ export default function UserProfile() {
     };
     useEffect(() => {
         UserInformation();
-        // }, [localStorage.getItem('userId')]);
-    }, [1]);
+    }, [localStorage.getItem('userId')]);
+    // }, [1]);
 
     const [disabledinput, setdisabledinput] = useState(1);
     const [buttondisplyblock, setbuttondisplyblock] = useState(true);
@@ -48,15 +50,15 @@ export default function UserProfile() {
     const [city, setcity] = useState("");
     const [address, setaddress] = useState("");
     const [pincode, setpincode] = useState("");
-    const [oldpassword, setoldpassword] = useState("");
-    const [newpassword, setnewpassword] = useState("");
+    const [oldPassword, setoldpassword] = useState("");
+    const [newPassword, setnewpassword] = useState("");
     const [conformpassword, setconformpassword] = useState("");
 
     const PersonalInformation = () => {
-        if (id !== "" && name !== "" && email !== "" && contactNumber !== "" && gender !== "") {
+        if (_Id !== "" && name !== "" && email !== "" && contactNumber !== "" && gender !== "") {
             if (userData2 !== "") {
                 toast.info("every thing is uptodate")
-            } axios.put("http://localhost:3005/user/updateProfile", { id, name, email, contactNumber, gender })
+            } axios.put(`http://localhost:3000/user/updateById/${_Id}`, { name, email, contactNumber, gender })
                 .then(response => {
                     toast.success("Personal Information updated !");
                     UserInformation();
@@ -74,10 +76,10 @@ export default function UserProfile() {
     };
 
     const MyAddress = () => {
-        if (id !== "" && state !== "" && city !== "" && address !== "" && pincode !== "") {
+        if (_Id !== "" && state !== "" && city !== "" && address !== "" && pincode !== "") {
             if (userData2 !== "") {
                 toast.info("every thing is uptodate")
-            } axios.put("http://localhost:3005/user/updateAddress", { id, state, city, address, pincode })
+            } axios.put(`http://localhost:3000/user/updateById/${_Id}`, { state, city, address, pincode })
                 .then(response => {
                     toast.success("Address Updated !");
                     UserInformation();
@@ -95,27 +97,149 @@ export default function UserProfile() {
     };
 
     const ChangePassword = () => {
-        if (id !== "" && oldpassword !== "" && newpassword !== "" && conformpassword !== "") {
-            if (newpassword === conformpassword) {
-                axios.put("http://localhost:3005/user/updatepassword", { id, oldpassword, newpassword })
+        if (_Id !== "" && oldPassword !== "" && newPassword !== "" && conformpassword !== "") {
+            if (newPassword === conformpassword) {
+                axios.put(`http://localhost:3000/user/changePassword/${_Id}`, { oldPassword, newPassword })
                     .then(response => {
                         if (response.status === 200) {
-                            toast.success("Password Successfuly Chenged....")
+                            Swal.fire({
+                                position: "top-center",
+                                icon: "success",
+                                title: "Password Successfully Changed",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
                         } else {
-                            toast.info("Old Password Dos't Match....")
+                            Swal.fire({
+                                position: "top-center",
+                                icon: "info",
+                                title: "Old Password Dos't Match ",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
                         }
                     }).catch(err => {
                         console.log(err);
                         toast.error("Old Password Dos't Match....")
                     })
             } else {
-                toast.warning("confirm both password are same !");
+                Swal.fire({
+                    position: "top-center",
+                    icon: "warning",
+                    title: "confirm both password are same !",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         } else {
-            toast.warning("Plese fill the all fields !");
+            Swal.fire({
+                position: "top-center",
+                icon: "warning",
+                title: "Please fill the all fields !",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
         }
 
     };
+
+    // const Name = document.getElementById('name');
+    // const Image = document.getElementById('image');
+    // const Email = document.getElementById('email');
+    // const ContactNumber = document.getElementById('contactNumber');
+    // const State = document.getElementById('state');
+    // const City = document.getElementById('city');
+    // const Address = document.getElementById('address');
+    // const Pincode = document.getElementById('pincode');
+    // const [userData, setuserData] = useState([]);
+    // const [userData2, setuserData2] = useState([]);
+    // let _Id = localStorage.getItem('userId');
+
+
+
+    const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        organization: '',
+        designation: '',
+        mobile: '',
+        additionalInfo: '',
+        address: '',
+        dateOfBirth: '',
+    });
+
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+
+        const storedFormData = localStorage.getItem('formData');
+        if (storedFormData) {
+            setFormData(JSON.parse(storedFormData));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('formData', JSON.stringify(formData));
+    }, [formData]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!userId) {
+            Swal.fire('Error', 'User not logged in', 'error');
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:3000/professional/create', {
+                userId,
+                ...formData,
+            });
+
+            const professionalId = response.data.data.professionalId;
+            localStorage.setItem('professionalId', professionalId);
+            console.log("professionalId: ", professionalId);
+            Swal.fire('Success', 'Profile created successfully', 'success');
+            navigate('/ProfessionalProfile', { state: { professionalId } });
+        } catch (error) {
+            console.log(error);
+            const errorMessage = error.response?.data?.message || 'Something went wrong';
+            Swal.fire('Error', errorMessage, 'error');
+        }
+    };
+    //  professionalId = localStorage.getItem('professionalId');
+    const professionalId = localStorage.getItem('userId');
+
+
+    const ProfileInformation = () => {
+        setFormData(true)
+        axios.post("http://localhost:3000/professional/viewByUserId", { userId, professionalId })
+            .then(response => {
+                setFormData(response.data);
+            }).catch(err => {
+                console.log(err);
+            })
+    };
+    useEffect(() => {
+        ProfileInformation();
+    }, [localStorage.getItem('userId')],[localStorage.getItem('professionalId')]);
+
+
 
     const [visibleDiv, setVisibleDiv] = useState(1);
     const handleButtonClick = (divId) => {
@@ -160,16 +284,65 @@ export default function UserProfile() {
                                         <h6 className="m-0 p-2 rounded-2  h-100 w-100">Education Profile</h6>
                                     </li>
                                     <hr className='m-0 border-white border' />
-                                    <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(7); }}>
-                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100">Professional profile</h6>
-                                    </li>
-                                    <hr className='m-0 border-white border' />
+                                    {/* <li
+                                        role='button'
+                                        style={{ background: "#292e39" }}
+                                        className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
+                                        onClick={() => handleButtonClick(
+                                            formData.name !== "" &&
+                                            formData.email !== "" &&
+                                            formData.address !== "" &&
+                                            formData.additionalInfo !== "" &&
+                                            formData.dateOfBirth !== "" &&
+                                            formData.mobile !== "" &&
+                                            formData.organization !== "" &&
+                                            formData.designation !== "" ? 7 : 12
+                                        )}
+                                    >
+                                        <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
+                                    </li> */}
+                                    {(formData.name !== "" &&
+                                        formData.email !== "" &&
+                                        formData.address !== "" &&
+                                        formData.additionalInfo !== "" &&
+                                        formData.dateOfBirth !== "" &&
+                                        formData.mobile !== "" &&
+                                        formData.organization !== "" &&
+                                        formData.designation !== "")?(console.log("card")):(console.log("fromhn",formData.name))}
+                                    {formData.name !== "" &&
+                                        formData.email !== "" &&
+                                        formData.address !== "" &&
+                                        formData.additionalInfo !== "" &&
+                                        formData.dateOfBirth !== "" &&
+                                        formData.mobile !== "" &&
+                                        formData.organization !== "" &&
+                                        formData.designation !== "" ? (
+                                        <li
+                                            role='button'
+                                            style={{ background: "#292e39" }}
+                                            className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
+                                            onClick={() => handleButtonClick(7)}
+                                        >
+                                            <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
+                                        </li>
+                                    ) : (
+                                        <li
+                                            role='button'
+                                            style={{ background: "#292e39" }}
+                                            className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
+                                            onClick={() => handleButtonClick(12)}
+                                        >
+                                            <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
+                                        </li>
+                                    )}
+
+                                    < hr className='m-0 border-white border' />
                                     <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(9); }}>
                                         <h6 className="m-0 p-2 rounded-2  h-100 w-100">Medical Profile</h6>
                                     </li>
                                     <hr className='m-0 border-white border' />
                                     <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(11); }}>
-                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100" onClick={()=>navigate("/editCart")}>Customized Profile</h6>
+                                        <h6 className="m-0 p-2 rounded-2  h-100 w-100" onClick={() => navigate("/editCart")}>Customized Profile</h6>
                                     </li>
                                     <hr className='m-0 border-white border' />
                                 </ul>
@@ -210,8 +383,15 @@ export default function UserProfile() {
                                         <h6 className="mb-0">Date of Birth</h6>
                                     </div>
                                     <div className="col-sm-9 text-secondary">
-                                        <input type="number" className="form-control fs-6 " id='dob' placeholder='Enter Contact Number' disabled={disabledinput} />
+                                        <input
+                                            type="date"
+                                            className="form-control fs-6"
+                                            id="dob"
+                                            placeholder="Enter Date of Birth"
+                                            disabled={disabledinput}
+                                        />
                                     </div>
+
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-sm-3 mb-2">
@@ -431,7 +611,6 @@ export default function UserProfile() {
                             <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 7 ? "flex" : "none" }}>
                                 <h4 className="mb-4 fw-bold text-center">Professional Profile</h4>
                                 <ProfessionalProfile />
-                                <button className="btn btn-dark mt-3 p-1 py-2" onClick={() => { handleButtonClick(8); }} >Update Details</button>
                             </div>
                             {/* Edit Professional Profile ============================================================ */}
                             <div className="card-body pt-1" style={{ display: visibleDiv === 8 ? "block" : "none" }}>
@@ -475,6 +654,142 @@ export default function UserProfile() {
                                         <button className="btn btn-dark p-1 py-2" >Save Changes</button>
                                     </div>
                                 </div>
+                            </div>
+                            {/*  Professional Profile form  ============================================================ */}
+                            <div className="card-body pt-1" style={{ display: visibleDiv === 12 ? "block" : "none" }}>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Full Name:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Full Name"
+                                                name="fullName"
+                                                value={formData.fullName}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Email:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="email"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Organization:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Organization Name"
+                                                name="organization"
+                                                value={formData.organization}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Designation:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Designation"
+                                                name="designation"
+                                                value={formData.designation}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Mobile:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Contact"
+                                                name="mobile"
+                                                value={formData.mobile}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Address:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Address"
+                                                name="address"
+                                                value={formData.address}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-1">Additional Info:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="text"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Additional Info"
+                                                name="additionalInfo"
+                                                value={formData.additionalInfo}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col-sm-3 mb-2">
+                                            <h6 className="mb-0">Date Of Birth:</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            <input
+                                                type="date"
+                                                className="form-control fs-6"
+                                                placeholder="Enter Date Of Birth"
+                                                name="dateOfBirth"
+                                                value={formData.dateOfBirth}
+                                                onChange={handleChange}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-sm-3"></div>
+                                        <div className="col-sm-9 text-secondary gap-2 d-flex">
+                                            <button type="button" className="btn btn-dark p-1 py-2" onClick={() => navigate(-1)}>
+                                                --- Back ---
+                                            </button>
+                                            <button type="submit" className="btn btn-dark p-1 py-2" onClick={() => { handleButtonClick(7); }}>
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                             {/* Medical Profile ========================================= */}
                             <div className="card-body pt-1 justify-content-center flex-column align-items-center" style={{ display: visibleDiv === 9 ? "flex" : "none" }}>
