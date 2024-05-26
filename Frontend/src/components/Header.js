@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { IoNotificationsCircleSharp } from "react-icons/io5";
+
 const Header = () => {
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -54,6 +56,13 @@ const Header = () => {
             <span className='border rounded ms-2 btn btn-secondary'  onClick={()=>navigate("/signup")}>Sign up</span>
           </div>
           )}
+          <IoNotificationsCircleSharp style={{
+          color: '#007bff', // Change the color of the icon
+          fontSize: '35px',
+          marginLeft:"40px", // Adjust the size of the icon
+          cursor:"pointer"}}
+          onClick={()=>navigate("/ReciveProfile")}
+           />
         </div>
       </div>
     </nav>

@@ -14,6 +14,8 @@ import CustomiseProfile from "./components/UserProfiles/customizedProfile.js";
 import ProfessionalProfile from "./components/UserProfiles/professionalProfile.js";
 import { UpdateProfessional } from "./components/UserProfiles/updateProfesional.js";
 import UserList from "./components/UserProfiles/userList.js";
+import ReciveProfile from "./components/UserProfiles/reciveProfile.js";
+import {ViewReciveProfile} from "./components/UserProfiles/viewReciveProfile.js";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
         <Route path="/ProfessionalProfile" element={<ProfessionalProfile/>}/>
         <Route path="/UpdateProfessionalProfile" element={<UpdateProfessional/>}/>
         <Route path="/UserList" element={<UserList/>}/>
+        <Route path="/ReciveProfile" element={<ReciveProfile/>}/>
+        <Route path="/ViewReciveProfile" element={<ViewReciveProfile/>}/>
 
       </Routes>
     </>
