@@ -20,7 +20,7 @@ export default function UserProfile() {
     const [userData, setuserData] = useState([]);
     const [userData2, setuserData2] = useState([]);
     let _Id = localStorage.getItem('userId');
-    
+
     // let id = 1;
     const UserInformation = () => {
         setbuttondisplyblock(true)
@@ -179,15 +179,15 @@ export default function UserProfile() {
             setUserId(storedUserId);
         }
 
-        const storedFormData = localStorage.getItem('formData');
-        if (storedFormData) {
-            setFormData(JSON.parse(storedFormData));
-        }
+        // const storedFormData = localStorage.getItem('formData');
+        // if (storedFormData) {
+        //     setFormData(JSON.parse(storedFormData));
+        // }
     }, []);
 
-    useEffect(() => {
-        localStorage.setItem('formData', JSON.stringify(formData));
-    }, [formData]);
+    // useEffect(() => {
+    //     localStorage.setItem('formData', JSON.stringify(formData));
+    // }, [formData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -223,21 +223,22 @@ export default function UserProfile() {
         }
     };
     //  professionalId = localStorage.getItem('professionalId');
-    const professionalId = localStorage.getItem('userId');
+    const professionalId = localStorage.getItem('professionalId');
 
 
     const ProfileInformation = () => {
-        setFormData(true)
-        axios.post("http://localhost:3000/professional/viewByUserId", { userId, professionalId })
+        // setFormData(true)
+        axios.post("http://localhost:3000/professional/viewByUserId", { userId:_Id, professionalId })
             .then(response => {
-                setFormData(response.data);
+                console.log(response.data)
+                setFormData(response.data.data);
             }).catch(err => {
                 console.log(err);
             })
     };
     useEffect(() => {
         ProfileInformation();
-    }, [localStorage.getItem('userId')],[localStorage.getItem('professionalId')]);
+    }, [localStorage.getItem('userId')], [localStorage.getItem('professionalId')]);
 
 
 
@@ -301,40 +302,32 @@ export default function UserProfile() {
                                     >
                                         <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
                                     </li> */}
-                                    {(formData.name !== "" &&
+                                    {/* {(formData.name !== "" &&
                                         formData.email !== "" &&
                                         formData.address !== "" &&
                                         formData.additionalInfo !== "" &&
                                         formData.dateOfBirth !== "" &&
                                         formData.mobile !== "" &&
                                         formData.organization !== "" &&
-                                        formData.designation !== "")?(console.log("card")):(console.log("fromhn",formData.name))}
-                                    {formData.name !== "" &&
-                                        formData.email !== "" &&
-                                        formData.address !== "" &&
-                                        formData.additionalInfo !== "" &&
-                                        formData.dateOfBirth !== "" &&
-                                        formData.mobile !== "" &&
-                                        formData.organization !== "" &&
-                                        formData.designation !== "" ? (
-                                        <li
-                                            role='button'
-                                            style={{ background: "#292e39" }}
-                                            className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
-                                            onClick={() => handleButtonClick(7)}
-                                        >
-                                            <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
-                                        </li>
-                                    ) : (
-                                        <li
-                                            role='button'
-                                            style={{ background: "#292e39" }}
-                                            className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
-                                            onClick={() => handleButtonClick(12)}
-                                        >
-                                            <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
-                                        </li>
-                                    )}
+                                        formData.designation !== "")?(console.log("card")):(console.log("fromhn",formData.name))} */}
+                                    <li
+                                        role='button'
+                                        style={{ background: "#292e39" }}
+                                        className="rounded-2 text-white list-group-item cursor-pointer d-flex justify-content-between align-items-center flex-wrap"
+                                        onClick={() => handleButtonClick(
+                                            formData.name !== "" &&
+                                                formData.email !== "" &&
+                                                formData.address !== "" &&
+                                                formData.additionalInfo !== "" &&
+                                                formData.dateOfBirth !== "" &&
+                                                formData.mobile !== "" &&
+                                                formData.organization !== "" &&
+                                                formData.designation !== "" ? 7 : 12
+                                        )}
+                                    >
+                                        <h6 className="m-0 p-2 rounded-2 h-100 w-100">Professional profile</h6>
+                                    </li>
+
 
                                     < hr className='m-0 border-white border' />
                                     <li role='button' style={{ background: "#292e39" }} className="rounded-2 text-white list-group-item  cursor-pointer d-flex justify-content-between align-items-center flex-wrap" onClick={() => { handleButtonClick(9); }}>

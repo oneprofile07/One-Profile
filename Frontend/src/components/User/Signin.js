@@ -26,11 +26,12 @@ export const SignInForm = () => {
             });
 
             // Handle response
-            const data = response.data;
+            const data = response.data.data;
+            console.log(data);
 
             if (response.status === 200) {
                 // Handle successful signin
-                const userId = data.userId;
+                const userId = data._id;
                 console.log(userId);
                 localStorage.setItem("isLoggedIn",true)
                 localStorage.setItem('userId', userId);
