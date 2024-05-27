@@ -76,12 +76,26 @@ export const viewUser = async (req, res) => {
     }
 };
 
-
+export const findByemail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 export const updateUser = async (req, res) => {
     try {
         const userId = req.params._Id;
-        const { name, contactNumber , email, gender, address, Dob,state, city, pincode } = req.body;
+        const { name, contactNumber, email, gender, address, Dob, state, city, pincode } = req.body;
         const image = req.file ? '/uploads/' + req.file.filename : undefined;
 
         const user = await User.findById(userId);
@@ -99,7 +113,7 @@ export const updateUser = async (req, res) => {
         user.state = state || user.state;
         user.city = city || user.city;
         user.pincode = pincode || user.pincode;
-        
+
         if (image) {
             user.image = image;
         }

@@ -37,7 +37,7 @@ function Home() {
                                                     <button className='btn btn-success' onClick={() => navigate("/signup")}>Join Us</button>
                                                 </div>
                                                 <div class="white-button scroll-to-section">
-                                                   <a href='#contact'><button className='btn btn-primary'>Contact Us</button></a> 
+                                                    <a href='#contact'><button className='btn btn-primary'>Contact Us</button></a>
                                                 </div>
                                             </>
                                             )}

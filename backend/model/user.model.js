@@ -18,20 +18,20 @@ const userSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ['Male', 'Female','male','female', 'Other']
+        enum: ['Male', 'Female', 'male', 'female', 'Other']
     },
     image: {
         type: String
     },
     contactNumber: {
         type: String,
-        // validate: {
-        //     validator: function(v) {
-        //         return /^\d{10}$/.test(v); // Ensures the mobile number contains exactly 10 digits
-        //     },
-        //     message: props => `${props.value} is not a valid mobile number!`
-        // },
-        // required: [true, 'User mobile number required'],
+        validate: {
+            validator: function (v) {
+                return /^\d{10}$/.test(v); // Ensures the mobile number contains exactly 10 digits
+            },
+            message: props => `${props.value} is not a valid mobile number!`
+        },
+        required: [true, 'User mobile number required'],
     },
     address: {
         type: String
@@ -39,20 +39,20 @@ const userSchema = new Schema({
     Dob: {
         type: Date
     },
-    state:{
-        type:String
-    },
-    city:{
+    state: {
         type: String
     },
-    pincode:{
+    city: {
+        type: String
+    },
+    pincode: {
         type: String
     }
-    
+
 });
 
 // Password hashing middleware
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     const user = this;
     if (!user.isModified('password')) {
         return next();
@@ -67,7 +67,7 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to check password
-userSchema.methods.checkPassword = function(originalPassword) {
+userSchema.methods.checkPassword = function (originalPassword) {
     return bcrypt.compare(originalPassword, this.password);
 };
 
@@ -75,10 +75,10 @@ const User = mongoose.model('User', userSchema);
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, 'uploads/');
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
     }
 });

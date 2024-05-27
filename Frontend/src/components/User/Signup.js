@@ -7,6 +7,7 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import { API } from '../API/URL';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import GoogleSign from './GoogleSign';
 
 export const SignUpForm = () => {
     const [email, setEmail] = useState('');
@@ -60,18 +61,18 @@ export const SignUpForm = () => {
                 password: password
             });
             Swal.fire({
-                position:"top-center",
+                position: "top-center",
                 icon: "success",
                 title: "Sign Up Successfully",
                 showConfirmButton: false,
                 timer: 1500
-              });
-            console.log(response.data._id); 
-            const userId = response.data._id; 
-            localStorage.setItem('userId', userId); 
-            localStorage.setItem("isLoggedIn",true)
+            });
+            console.log(response.data._id);
+            const userId = response.data._id;
+            localStorage.setItem('userId', userId);
+            localStorage.setItem("isLoggedIn", true)
             navigate("/");
-           
+
         } catch (error) {
             console.error('Error signing up:', error);
             setErrors({ ...errors, general: 'An error occurred while signing up. Please try again.' });
@@ -95,7 +96,7 @@ export const SignUpForm = () => {
 
     return (
         <>
-            <img className="wave" src="./assets/wave.png" alt="wave"  />
+            <img className="wave" src="./assets/wave.png" alt="wave" />
             <div id="container">
                 <div className="img">
                     <img src="./assets/icon1.png" alt="background" />
@@ -131,8 +132,9 @@ export const SignUpForm = () => {
                             </div>
                         </div>
                         {errors.email && <div className="error-container"><p className="error mt-2 text-danger">{errors.email}</p></div>}
-                        <input type="submit" className="btn btn-success form-control mb-2"  value="Sign Up" />
+                        <input type="submit" className="btn btn-success form-control mb-2" value="Sign Up" />
                         {errors.general && <p className="error mt-3 text-danger">{errors.general}</p>}
+                        <GoogleSign />
                         <div className='d-flex' style={{ marginTop: "20px" }}>
                             <p style={{ marginLeft: "10px" }}>Already have an account?</p>
                             <p style={{ marginLeft: "10px" }}>
@@ -145,3 +147,5 @@ export const SignUpForm = () => {
         </>
     );
 };
+
+
